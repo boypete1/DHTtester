@@ -1,5 +1,14 @@
+#include <WiFi.h>
+
+
+
 //ส่วนของการติดตั้งไลบลารี่
 #include "DHT.h"
+
+
+//กำหนดค่าคงที่
+const char* ssid = "MastreEWTC_2.4G";
+const char* password = "12345abcde";
 
 //กำหนดขาของ nodeMCU32s ให้รับค่าจาก DHT
 #define DHTPIN 23    // what digital pin we're connected to
@@ -16,6 +25,25 @@ DHT dht(DHTPIN, DHTTYPE);
 
 void setup() {
   Serial.begin(9600);
+//  For Check Internet
+  Serial.println();
+  Serial.println();
+  Serial.print("Try to Connected to: ");
+  Serial.println(ssid);
+  
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    
+    delay(500);
+    Serial.print(".");
+    }
+
+    Serial.println();
+    Serial.println("Can Connected WiFi");
+    Serial.println("IP address ==> ");
+    Serial.println(WiFi.localIP());
+//  For DHT
   Serial.println("DHTxx test!");
 
   dht.begin();
